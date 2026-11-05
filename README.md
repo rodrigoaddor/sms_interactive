@@ -65,10 +65,11 @@ Example `ups.conf` once the protocol is verified:
     pollinterval = 5
 ```
 
-The driver publishes voltages, frequency, load, temperature, raw battery
-indication, beeper state, status, and alarms. It marks data stale on invalid
+The driver publishes voltages, frequency, load, temperature, battery charge
+(protocol value divided by ten), beeper state, status, and alarms. It marks data stale on invalid
 responses. It exposes no instant commands and refuses UPS power shutdown.
-Battery charge/runtime and automatic power-off are not supported yet.
+Battery runtime and automatic power-off are not supported yet. Battery charge
+is reported as supplied by the UPS after scaling, including any abrupt jumps.
 
 ## Validation in this workspace
 

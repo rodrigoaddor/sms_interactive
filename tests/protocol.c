@@ -9,7 +9,7 @@ int main(void) {
     assert(sms_request('S',q)==-1);
     checksum(p); assert(!sms_parse(p,18,&r));
     assert(r.input==127.7 && r.output==127.0 && r.load==32.1 && r.frequency==60.0);
-    assert(r.battery_raw==100 && r.flags==200);
+    assert(r.battery_charge==10.0 && r.flags==200);
     assert(sms_parse(p,17,&r)==-1);
     p[5]^=1; assert(sms_parse(p,18,&r)==-1); p[5]^=1;
     p[17]=0; assert(sms_parse(p,18,&r)==-1); p[17]=13;
@@ -23,17 +23,17 @@ int main(void) {
         assert(sms_valid(live_f, sizeof(live_f)));
         assert(!sms_parse(live_q, sizeof(live_q), &r));
         assert(r.input==119.1 && r.output==119.0 && r.frequency==59.9);
-        assert(r.load==0.1 && r.battery_raw==290 && r.temperature==40.9);
+        assert(r.load==0.1 && r.battery_charge==29.0 && r.temperature==40.9);
         assert(r.flags==0x28);
         {
             const unsigned char battery_q[] = {0x3d,0,0,0,0,0x04,0x7e,0,2,2,0x58,3,0xe8,1,0x9b,0xa8,0xb6,0x0d};
             assert(!sms_parse(battery_q, sizeof(battery_q), &r));
             assert(r.input==0 && r.output==115.0 && r.frequency==60.0);
-            assert(r.battery_raw==1000 && r.flags==0xa8);
+            assert(r.battery_charge==100.0 && r.flags==0xa8);
             {
                 const unsigned char restored_q[] = {0x3d,0,0,4,0x63,4,0x62,0,0,2,0x56,3,0xb6,1,0x9c,0x28,0x20,0x0d};
                 assert(!sms_parse(restored_q, sizeof(restored_q), &r));
-                assert(r.input==112.3 && r.output==112.2 && r.battery_raw==950);
+                assert(r.input==112.3 && r.output==112.2 && r.battery_charge==95.0);
                 assert(r.flags==0x28);
             }
         }

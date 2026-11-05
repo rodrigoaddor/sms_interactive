@@ -21,9 +21,11 @@ Q responses: `<`, `=`, or `>`; seven big endian 16-bit quantities;
 one status byte; checksum; CR. Quantities are last input voltage, input voltage,
 output voltage, output load, output frequency, battery indication, temperature.
 All except the battery indication use tenths according to PowerView XML.
-PowerView leaves battery indication unscaled, whereas upstream sms_ser divides
-it by ten. Our driver preserves the raw value and does not invent battery charge,
-voltage, or runtime until this discrepancy is resolved on the Gamer.
+PowerView's XML leaves battery indication unscaled, but its application code
+and upstream sms_ser divide it by ten. With the user's confirmation, our driver
+now publishes this value divided by ten as `battery.charge`: 290 means 29%,
+1000 means 100%, and 950 means 95%. No raw battery variable, battery voltage,
+or runtime is published. Abrupt changes in the UPS's reported charge are preserved.
 
 Status bits from least significant to most: beeper enabled, shutdown pending,
 test active, UPS OK, boost, bypass, low battery, on battery. XML indexes refer
@@ -45,8 +47,7 @@ SHA256 of inspected files:
 - powerview.jar: f667629ccd2044065ef56c4375d55a0abac273fbe2f330e0adda04229fc142b7
 - Comunicacao-1.9.jar: 1fdeb3b5f68523f72b8f2f42a1acb91bb628ea79e4b97ab9413a0133c1e62e2f
 
-Next validation: resolve battery units and observe OB and return to OL with
-the user's assistance. Low battery,
+OB and return to OL were validated below. Low-battery timing remains untested;
 self-test, shutdown, and load controls have not been tested or enabled.
 
 ## Hardware validation on 2026-11-05
@@ -66,9 +67,8 @@ F returns nominal battery text ` 24` and frequency text `60`.
 Further static analysis of `br.com.sms.powerview.protocolo.a.a.a` shows that
 PowerView divides the battery field by ten unless firmware contains `SE`.
 It then uses that number with a configurable low-battery threshold and calls
-it a battery percentage. This establishes software scaling, but does not prove
-physical units on this firmware: 290 could plausibly encode 29.0 V for a 24 V
-pack or another indication. Do not publish it as charge or voltage yet.
+it a battery percentage. The user has confirmed that this is battery charge,
+despite the UPS's unusual reporting. It is not used to derive battery voltage.
 
 Battery-mode transition validated with the user disconnecting only mains:
 Q reply `3d00000000047e0002025803e8019ba8b60d` reports input 0 V,
@@ -84,7 +84,8 @@ Return to mains was also validated: Q reply
 queries. Both raw captures and native NUT dumps are retained under
 `tests/fixtures/`. All captured frames passed checksums.
 
-The battery field transitions 290 -> 1000 -> 950. PowerView's scaling would
-produce 29.0 -> 100.0 -> 95.0. Its physical meaning and initial low value
-remain unresolved; the driver deliberately continues exposing the raw field.
+The battery field transitions 290 -> 1000 -> 950. The driver now reports
+29.0% -> 100.0% -> 95.0% as `battery.charge`, following PowerView's scaling
+and the user's confirmation of its meaning. The initial low value and sudden
+jump are UPS reporting behavior; the driver does not smooth or correct them.
 No self-test, beeper control, output switching, or shutdown commands were sent.

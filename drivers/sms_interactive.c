@@ -53,9 +53,7 @@ void upsdrv_updateinfo(void)
     dstate_setinfo("ups.load", "%.1f", r.load);
     dstate_setinfo("output.frequency", "%.1f", r.frequency);
     dstate_setinfo("ups.temperature", "%.1f", r.temperature);
-    /* Battery units differ between protocol implementations. Preserve raw data
-     * until the actual Gamer firmware's scaling has been established. */
-    dstate_setinfo("experimental.sms.battery.raw", "%.0f", r.battery_raw);
+    dstate_setinfo("battery.charge", "%.1f", r.battery_charge);
     dstate_setinfo("ups.beeper.status", "%s", (r.flags & 1) ? "enabled" : "disabled");
     status_init();
     status_set((r.flags & 128) ? "OB" : "OL");
