@@ -1,0 +1,22 @@
+{
+  "model": "GAM2000BiBiW",
+  "firmware": "1.4",
+  "mode": "mains (user has not yet changed mode)",
+  "frames": [
+    {
+      "command": "I",
+      "request": "49ffffffffbb0d",
+      "response": "3a47414d323030304269426957312e34ef0d"
+    },
+    {
+      "command": "F",
+      "request": "46ffffffffbe0d",
+      "response": "3b4542695331313530303020323436306f0d"
+    },
+    {
+      "command": "Q",
+      "request": "51ffffffffb30d",
+      "response": "3d000004a704a60001025701220199282f0d"
+    }
+  ]
+}

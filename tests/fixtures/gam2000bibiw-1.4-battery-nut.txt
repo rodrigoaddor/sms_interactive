@@ -1,0 +1,27 @@
+Network UPS Tools 2.8.5.1-0+g1c4ab78 (development iteration after 2.8.5) - SMS Gamer monitoring driver 0.1
+Warning: This is an experimental driver.
+Some features may not function correctly.
+
+device.mfr: SMS
+device.model: GAM2000BiBiW
+device.type: ups
+driver.debug: 0
+driver.flag.allow_killpower: 0
+driver.name: sms_gamer
+driver.parameter.pollinterval: 2
+driver.parameter.port: /dev/ttyUSB0
+driver.parameter.synchronous: auto
+driver.state: dumping
+driver.version: 2.8.5.1-0+g1c4ab78
+driver.version.internal: 0.1
+experimental.sms.battery.raw: 1000
+input.voltage: 0.0
+output.frequency: 60.0
+output.voltage: 115.0
+ups.beeper.status: disabled
+ups.firmware: 1.4
+ups.load: 0.2
+ups.mfr: SMS
+ups.model: GAM2000BiBiW
+ups.status: OB BYPASS
+ups.temperature: 41.1

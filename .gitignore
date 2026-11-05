@@ -1,0 +1,8 @@
+sms_powerview/
+.cache/
+build/
+__pycache__/
+
+# Local adapter configuration and generated static-analysis output
+/docs/70-sms-gamer.rules
+/research/
